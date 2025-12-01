@@ -1,0 +1,59 @@
+{
+    "name": "balismatz/filament-prevent-outdated-record-update",
+    "description": "Filament package to prevent the update of outdated records.",
+    "keywords": [
+        "laravel",
+        "filament",
+        "records",
+        "resources"
+    ],
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "BalisMatz\\FilamentPreventOutdatedRecordUpdate\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "BalisMatz\\FilamentPreventOutdatedRecordUpdate\\Tests\\": "tests/",
+            "Workbench\\App\\": "workbench/app/",
+            "Workbench\\Database\\Factories\\": "workbench/database/factories/"
+        }
+    },
+    "support": {
+        "issues": "https://github.com/balismatz/filament-prevent-outdated-record-update/issues",
+        "source": "https://github.com/balismatz/filament-prevent-outdated-record-update"
+    },
+    "authors": [
+        {
+            "name": "Balis Matzouranis",
+            "email": "balis.matz@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^8.2",
+        "filament/filament": "^4.0"
+    },
+    "require-dev": {
+        "phpstan/phpstan": "^2.1",
+        "laravel/pint": "^1.19",
+        "orchestra/testbench": "^9.0 || ^10.0",
+        "phpunit/phpunit": "^12.4"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "BalisMatz\\FilamentPreventOutdatedRecordUpdate\\FilamentPreventOutdatedRecordUpdateServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "scripts": {
+        "check": [
+            "pint",
+            "phpstan",
+            "phpunit"
+        ]
+    }
+}
