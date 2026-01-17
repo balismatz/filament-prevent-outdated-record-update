@@ -13,14 +13,14 @@ performed based on the ```updated_at``` attribute.
 
 - PHP 8.2 or higher
 - Laravel 11.28 or higher
-- Filament 4.0 or higher
+- Filament 4
 
 ## Installation
 
 Require the package using Composer:
 
 ```shell
-composer require balismatz/filament-prevent-outdated-record-update
+composer require balismatz/filament-prevent-outdated-record-update:"^4.0"
 ```
 
 ### Translate the notification
