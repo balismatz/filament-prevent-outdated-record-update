@@ -20,7 +20,7 @@ performed based on the ```updated_at``` attribute.
 Require the package using Composer:
 
 ```shell
-composer require balismatz/filament-prevent-outdated-record-update:"^5.0"
+composer require 'balismatz/filament-prevent-outdated-record-update:^5.0'
 ```
 
 ### Translate the notification
