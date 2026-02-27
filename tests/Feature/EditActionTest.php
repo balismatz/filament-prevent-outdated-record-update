@@ -8,9 +8,11 @@ use Filament\Actions\Testing\TestAction;
 use Filament\Notifications\Notification;
 use Livewire\Livewire;
 use Workbench\App\Filament\Resources\Categories\Pages\ListCategories;
+use Workbench\App\Filament\Resources\Pages\Pages\ListPages;
 use Workbench\App\Filament\Resources\Posts\Pages\ListPosts;
 use Workbench\App\Filament\Resources\Tags\Pages\ListTags;
 use Workbench\App\Models\Category;
+use Workbench\App\Models\Page;
 use Workbench\App\Models\Post;
 use Workbench\App\Models\Tag;
 
@@ -44,6 +46,38 @@ class EditActionTest extends TestCase
 
         $this->assertDatabaseHas(Post::class, [
             'id' => $post->id,
+            'title' => 'Test title',
+        ]);
+    }
+
+    /**
+     * Test if outdated record with CarbonImmutable date can not be updated.
+     */
+    public function test_prevents_outdated_record_update_with_carbon_immutable_date(): void
+    {
+        $page = Page::factory()->create();
+
+        $action = Livewire::test(ListPages::class, ['page' => $page])
+            ->mountAction(TestAction::make('edit')->table($page));
+
+        $this->travel(5)->seconds();
+
+        $page->title = 'Test title';
+        $page->save();
+
+        $action
+            ->fillForm(['title' => 'Test title (outdated)'])
+            ->callMountedAction()
+            ->assertActionHalted()
+            ->assertNotified(
+                Notification::make()
+                    ->title('Your changes can not be saved')
+                    ->body('The record has been updated by another user, or you have already submitted your changes.')
+                    ->danger()
+            );
+
+        $this->assertDatabaseHas(Page::class, [
+            'id' => $page->id,
             'title' => 'Test title',
         ]);
     }
@@ -121,7 +155,7 @@ class EditActionTest extends TestCase
     {
         $this->expectException(PreventOutdatedRecordUpdateException::class);
 
-        $this->expectExceptionMessage('The record updated_at attribute is not an instance of Illuminate\Support\Carbon');
+        $this->expectExceptionMessage('The record updated_at attribute is not an instance of Carbon\CarbonInterface');
 
         $tag = Tag::factory()->create();
 
