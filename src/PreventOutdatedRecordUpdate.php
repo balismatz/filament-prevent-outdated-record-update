@@ -65,7 +65,7 @@ class PreventOutdatedRecordUpdate
     /**
      * Get the datetime from record.
      */
-    protected function getRecordDateTime(): Carbon
+    protected function getRecordDateTime(): CarbonInterface
     {
         if (! $this->record->hasAttribute($this->attribute)) {
             throw new PreventOutdatedRecordUpdateException(
