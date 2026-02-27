@@ -3,6 +3,7 @@
 namespace BalisMatz\FilamentPreventOutdatedRecordUpdate;
 
 use BalisMatz\FilamentPreventOutdatedRecordUpdate\Exceptions\PreventOutdatedRecordUpdateException;
+use Carbon\CarbonInterface;
 use Carbon\Exceptions\InvalidFormatException;
 use Filament\Notifications\Notification;
 use Filament\Support\Exceptions\Halt;
@@ -64,7 +65,7 @@ class PreventOutdatedRecordUpdate
     /**
      * Get the datetime from record.
      */
-    protected function getRecordDateTime(): Carbon
+    protected function getRecordDateTime(): CarbonInterface
     {
         if (! $this->record->hasAttribute($this->attribute)) {
             throw new PreventOutdatedRecordUpdateException(
@@ -74,9 +75,9 @@ class PreventOutdatedRecordUpdate
 
         $dateTime = $this->record->getAttribute($this->attribute);
 
-        if (! $dateTime instanceof Carbon) {
+        if (! $dateTime instanceof CarbonInterface) {
             throw new PreventOutdatedRecordUpdateException(
-                'The record '.$this->attribute.' attribute is not an instance of '.Carbon::class
+                'The record '.$this->attribute.' attribute is not an instance of '.CarbonInterface::class
             );
         }
 
