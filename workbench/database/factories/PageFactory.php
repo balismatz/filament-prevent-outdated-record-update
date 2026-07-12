@@ -3,9 +3,10 @@
 namespace Workbench\Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Workbench\App\Models\Page;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\Workbench\App\Models\Page>
+ * @extends Factory<Page>
  */
 class PageFactory extends Factory
 {
