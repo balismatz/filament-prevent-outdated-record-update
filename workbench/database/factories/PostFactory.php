@@ -3,9 +3,10 @@
 namespace Workbench\Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Workbench\App\Models\Post;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\Workbench\App\Models\Post>
+ * @extends Factory<Post>
  */
 class PostFactory extends Factory
 {

@@ -4,10 +4,11 @@ namespace Workbench\App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Workbench\Database\Factories\CategoryFactory;
 
 class Category extends Model
 {
-    /** @use HasFactory<\Workbench\Database\Factories\CategoryFactory> */
+    /** @use HasFactory<CategoryFactory> */
     use HasFactory;
 
     /**

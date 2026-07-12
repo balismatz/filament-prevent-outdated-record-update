@@ -4,10 +4,11 @@ namespace Workbench\App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Workbench\Database\Factories\PageFactory;
 
 class Page extends Model
 {
-    /** @use HasFactory<\Workbench\Database\Factories\PageFactory> */
+    /** @use HasFactory<PageFactory> */
     use HasFactory;
 
     /**

@@ -27,7 +27,7 @@ class FilamentPreventOutdatedRecordUpdateServiceProvider extends ServiceProvider
         ]);
 
         EditAction::macro('preventOutdatedRecordUpdate', function (): EditAction {
-            /** @var \Filament\Actions\EditAction $this */
+            /** @var EditAction $this */
             return $this->beforeFormValidated(
                 function (EditAction $action, Component $livewire, Model $record) {
                     $data = collect($livewire->mountedActions ?? [])
