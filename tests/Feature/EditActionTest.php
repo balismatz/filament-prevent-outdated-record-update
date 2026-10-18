@@ -83,6 +83,38 @@ class EditActionTest extends TestCase
     }
 
     /**
+     * Test if outdated record can be updated with allowOutdatedRecordUpdate.
+     */
+    public function test_allows_outdated_record_update(): void
+    {
+        $post = Post::factory()->create();
+
+        $action = Livewire::test(ListPosts::class, ['post' => $post])
+            ->mountAction(TestAction::make('edit-allow-outdated')->table($post));
+
+        $this->travel(5)->seconds();
+
+        $post->title = 'Test title';
+        $post->save();
+
+        $action
+            ->fillForm(['title' => 'Test title (outdated)'])
+            ->callMountedAction()
+            ->assertSuccessful()
+            ->assertNotNotified(
+                Notification::make()
+                    ->title('Your changes can not be saved')
+                    ->body('The record has been updated by another user, or you have already submitted your changes.')
+                    ->danger()
+            );
+
+        $this->assertDatabaseHas(Post::class, [
+            'id' => $post->id,
+            'title' => 'Test title (outdated)',
+        ]);
+    }
+
+    /**
      * Test if exception is thrown when the data attribute is missing.
      */
     public function test_missing_data_attribute_throws_exception(): void
