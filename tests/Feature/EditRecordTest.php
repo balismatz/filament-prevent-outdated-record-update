@@ -86,7 +86,7 @@ class EditRecordTest extends TestCase
     {
         $this->expectException(PreventOutdatedRecordUpdateException::class);
 
-        $this->expectExceptionMessage('The data updated_at value is missing or is empty.');
+        $this->expectExceptionMessage('The data updated_at key is missing.');
 
         $category = Category::factory()->create();
 
@@ -101,7 +101,7 @@ class EditRecordTest extends TestCase
     {
         $this->expectException(PreventOutdatedRecordUpdateException::class);
 
-        $this->expectExceptionMessage('The data updated_at value is missing or is empty.');
+        $this->expectExceptionMessage('The data updated_at value is empty.');
 
         $category = Category::factory()->create();
 
@@ -143,13 +143,31 @@ class EditRecordTest extends TestCase
     }
 
     /**
+     * Test if exception is thrown when the record attribute is empty.
+     */
+    public function test_empty_record_attribute_throws_exception(): void
+    {
+        $this->expectException(PreventOutdatedRecordUpdateException::class);
+
+        $this->expectExceptionMessage('The record updated_at value is empty.');
+
+        $post = Post::factory()->create([
+            'updated_at' => null,
+        ]);
+
+        Livewire::test(EditPost::class, ['record' => $post->id])
+            ->fillForm(['updated_at' => now()])
+            ->call('save');
+    }
+
+    /**
      * Test if exception is thrown when the record attribute is not valid.
      */
     public function test_invalid_record_attribute_throws_exception(): void
     {
         $this->expectException(PreventOutdatedRecordUpdateException::class);
 
-        $this->expectExceptionMessage('The record updated_at attribute is not an instance of Carbon\CarbonInterface');
+        $this->expectExceptionMessage("The record updated_at value is not valid. Could not parse 'test': Failed to parse time string (test) at position 0 (t): The timezone could not be found in the database");
 
         $tag = Tag::factory()->create();
 

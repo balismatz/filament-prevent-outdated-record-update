@@ -2,6 +2,7 @@
 
 namespace BalisMatz\FilamentPreventOutdatedRecordUpdate;
 
+use Closure;
 use Filament\Actions\EditAction;
 use Filament\Support\Exceptions\Halt;
 use Illuminate\Database\Eloquent\Model;
@@ -31,19 +32,21 @@ class FilamentPreventOutdatedRecordUpdateServiceProvider extends ServiceProvider
             return $this->beforeFormValidated(null);
         });
 
-        EditAction::macro('preventOutdatedRecordUpdate', function (): EditAction {
+        EditAction::macro('preventOutdatedRecordUpdate', function (bool|Closure $pivot = false): EditAction {
             /** @var EditAction $this */
             /** @phpstan-ignore property.protected */
             $beforeFormValidated = $this->beforeFormValidated;
 
+            $pivot = (bool) $this->evaluate($pivot);
+
             return $this->beforeFormValidated(
-                function (EditAction $action, Component $livewire, Model $record) use ($beforeFormValidated) {
+                function (EditAction $action, Component $livewire, Model $record) use ($beforeFormValidated, $pivot) {
                     $data = collect($livewire->mountedActions ?? [])
                         ->pluck('data')
                         ->last() ?: [];
 
                     try {
-                        (new PreventOutdatedRecordUpdate($data, $record))();
+                        (new PreventOutdatedRecordUpdate($data, $record, $pivot))();
                     } catch (Halt) {
                         // Call the "halt" method to make sure that prevention
                         // will always be done correctly.
