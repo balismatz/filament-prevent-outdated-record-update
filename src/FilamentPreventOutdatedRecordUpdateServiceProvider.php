@@ -26,6 +26,11 @@ class FilamentPreventOutdatedRecordUpdateServiceProvider extends ServiceProvider
             __DIR__.'/../lang' => $this->app->langPath('vendor/filament-prevent-outdated-record-update'),
         ]);
 
+        EditAction::macro('allowOutdatedRecordUpdate', function (): EditAction {
+            /** @var EditAction $this */
+            return $this->beforeFormValidated(null);
+        });
+
         EditAction::macro('preventOutdatedRecordUpdate', function (): EditAction {
             /** @var EditAction $this */
             /** @phpstan-ignore property.protected */

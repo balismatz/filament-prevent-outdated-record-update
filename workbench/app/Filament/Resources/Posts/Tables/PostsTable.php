@@ -24,6 +24,7 @@ class PostsTable
             ])
             ->recordActions([
                 EditAction::make()->preventOutdatedRecordUpdate(),
+                EditAction::make('edit-allow-outdated')->allowOutdatedRecordUpdate(),
             ]);
     }
 }

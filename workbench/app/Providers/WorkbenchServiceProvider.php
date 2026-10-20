@@ -2,6 +2,7 @@
 
 namespace Workbench\App\Providers;
 
+use Filament\Actions\EditAction;
 use Illuminate\Support\ServiceProvider;
 
 class WorkbenchServiceProvider extends ServiceProvider
@@ -19,6 +20,12 @@ class WorkbenchServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        EditAction::configureUsing(function (EditAction $action): EditAction {
+            if ($action->getName() !== 'edit-allow-outdated') {
+                return $action;
+            }
+
+            return $action->preventOutdatedRecordUpdate();
+        });
     }
 }

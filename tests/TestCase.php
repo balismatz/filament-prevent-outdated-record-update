@@ -21,6 +21,7 @@ use Orchestra\Testbench\Concerns\WithWorkbench;
 use Orchestra\Testbench\TestCase as OrchestraTestbenchTestCase;
 use Workbench\App\Models\User;
 use Workbench\App\Providers\Filament\AdminPanelProvider;
+use Workbench\App\Providers\WorkbenchServiceProvider;
 
 abstract class TestCase extends OrchestraTestbenchTestCase
 {
@@ -66,6 +67,7 @@ abstract class TestCase extends OrchestraTestbenchTestCase
             WidgetsServiceProvider::class,
             LivewireServiceProvider::class,
             AdminPanelProvider::class,
+            WorkbenchServiceProvider::class,
         ];
     }
 }

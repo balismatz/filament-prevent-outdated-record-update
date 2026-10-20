@@ -62,6 +62,30 @@ EditAction::make()
     ->preventOutdatedRecordUpdate()
 ```
 
+To prevent outdated record updates globally, call the
+```preventOutdatedRecordUpdate()``` method from
+```EditAction::configureUsing()``` in a service provider's
+```boot()``` method. If you want to allow outdated record updates for a
+specific edit action, call ```allowOutdatedRecordUpdate()```.
+
+```php
+EditAction::make()
+    ->label('Edit record')
+    ->allowOutdatedRecordUpdate()
+```
+
+If you are using the ```beforeFormValidated()``` action hook, you must call it
+**after** the ```allowOutdatedRecordUpdate()``` method.
+
+```php
+EditAction::make()
+    ->label('Edit record')
+    ->allowOutdatedRecordUpdate()
+    ->beforeFormValidated(function () {
+        // ...
+    })
+```
+
 ### Edit record (page)
 
 To prevent outdated record updates on the edit record (page), use the
