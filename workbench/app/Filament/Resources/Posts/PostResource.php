@@ -10,6 +10,7 @@ use Filament\Tables\Table;
 use Workbench\App\Filament\Resources\Posts\Pages\CreatePost;
 use Workbench\App\Filament\Resources\Posts\Pages\EditPost;
 use Workbench\App\Filament\Resources\Posts\Pages\ListPosts;
+use Workbench\App\Filament\Resources\Posts\Pages\ManageRelatedPosts;
 use Workbench\App\Filament\Resources\Posts\Schemas\PostForm;
 use Workbench\App\Filament\Resources\Posts\Tables\PostsTable;
 use Workbench\App\Models\Post;
@@ -36,6 +37,7 @@ class PostResource extends Resource
             'index' => ListPosts::route('/'),
             'create' => CreatePost::route('/create'),
             'edit' => EditPost::route('/{record}/edit'),
+            'related-posts' => ManageRelatedPosts::route('/{record}/related-posts'),
         ];
     }
 }

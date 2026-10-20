@@ -86,6 +86,22 @@ EditAction::make()
     })
 ```
 
+#### Pivot records
+
+Pivot records may also have update timestamps. In these cases, the
+```preventOutdatedRecordUpdate()``` method stops the update process by default,
+even when the record is not actually outdated.
+
+To prevent outdated updates for these records, pass a boolean or a closure that
+returns a boolean to the ```pivot``` parameter of the
+```preventOutdatedRecordUpdate()``` method.
+
+```php
+EditAction::make()
+    ->label('Edit record')
+    ->preventOutdatedRecordUpdate(pivot: true)
+```
+
 ### Edit record (page)
 
 To prevent outdated record updates on the edit record (page), use the

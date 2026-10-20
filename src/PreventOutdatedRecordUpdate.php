@@ -9,10 +9,11 @@ use Filament\Notifications\Notification;
 use Filament\Support\Exceptions\Halt;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
+use InvalidArgumentException;
 
 class PreventOutdatedRecordUpdate
 {
-    protected string $attribute = 'updated_at';
+    protected string $attribute;
 
     /**
      * Create a new class instance.
@@ -20,7 +21,13 @@ class PreventOutdatedRecordUpdate
     public function __construct(
         protected array $data,
         protected Model $record,
-    ) {}
+        protected bool $pivot = false,
+    ) {
+        $this->attribute = match ($pivot) {
+            true => 'pivot_updated_at',
+            default => 'updated_at'
+        };
+    }
 
     /**
      * Invoke the class instance.
@@ -41,29 +48,21 @@ class PreventOutdatedRecordUpdate
     }
 
     /**
-     * Get the datetime from data.
+     * Get the datetime from the data.
      */
-    protected function getDataDateTime(): Carbon
+    protected function getDataDateTime(): CarbonInterface
     {
-        try {
-            $value = $this->data[$this->attribute] ?? null;
-
-            if (! $value) {
-                throw new PreventOutdatedRecordUpdateException(
-                    'The data '.$this->attribute.' value is missing or is empty.'
-                );
-            }
-
-            return Carbon::create($value);
-        } catch (InvalidFormatException $e) {
+        if (! array_key_exists($this->attribute, $this->data)) {
             throw new PreventOutdatedRecordUpdateException(
-                'The data '.$this->attribute.' value is not valid. '.$e->getMessage()
+                'The data '.$this->attribute.' key is missing.'
             );
         }
+
+        return $this->convertToCarbon('data', $this->data[$this->attribute]);
     }
 
     /**
-     * Get the datetime from record.
+     * Get the datetime from the record.
      */
     protected function getRecordDateTime(): CarbonInterface
     {
@@ -73,14 +72,32 @@ class PreventOutdatedRecordUpdate
             );
         }
 
-        $dateTime = $this->record->getAttribute($this->attribute);
+        return $this->convertToCarbon('record', $this->record->getAttribute($this->attribute));
+    }
 
-        if (! $dateTime instanceof CarbonInterface) {
-            throw new PreventOutdatedRecordUpdateException(
-                'The record '.$this->attribute.' attribute is not an instance of '.CarbonInterface::class
-            );
+    /**
+     * Convert the value to a Carbon instance.
+     */
+    protected function convertToCarbon(string $source, mixed $value): CarbonInterface
+    {
+        if ($value instanceof CarbonInterface) {
+            return $value;
         }
 
-        return $dateTime;
+        try {
+            if (blank($value)) {
+                throw new InvalidArgumentException("The {$source} {$this->attribute} value is empty.");
+            }
+
+            return Carbon::create($value);
+        } catch (InvalidFormatException $e) {
+            throw new PreventOutdatedRecordUpdateException(
+                "The {$source} {$this->attribute} value is not valid. {$e->getMessage()}"
+            );
+        } catch (InvalidArgumentException $e) {
+            throw new PreventOutdatedRecordUpdateException(
+                $e->getMessage()
+            );
+        }
     }
 }
