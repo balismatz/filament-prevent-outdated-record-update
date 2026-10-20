@@ -28,8 +28,11 @@ class FilamentPreventOutdatedRecordUpdateServiceProvider extends ServiceProvider
 
         EditAction::macro('preventOutdatedRecordUpdate', function (): EditAction {
             /** @var EditAction $this */
+            /** @phpstan-ignore property.protected */
+            $beforeFormValidated = $this->beforeFormValidated;
+
             return $this->beforeFormValidated(
-                function (EditAction $action, Component $livewire, Model $record) {
+                function (EditAction $action, Component $livewire, Model $record) use ($beforeFormValidated) {
                     $data = collect($livewire->mountedActions ?? [])
                         ->pluck('data')
                         ->last() ?: [];
@@ -41,6 +44,8 @@ class FilamentPreventOutdatedRecordUpdateServiceProvider extends ServiceProvider
                         // will always be done correctly.
                         $action->halt();
                     }
+
+                    $action->beforeFormValidated($beforeFormValidated);
 
                     return $action->callBeforeFormValidated();
                 }
