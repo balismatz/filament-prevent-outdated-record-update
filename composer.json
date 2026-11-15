@@ -38,7 +38,7 @@
         "phpstan/phpstan": "^2.1",
         "laravel/pint": "^1.19",
         "orchestra/testbench": "^11.0",
-        "phpunit/phpunit": "^12.4"
+        "phpunit/phpunit": "^13.4"
     },
     "extra": {
         "laravel": {
