@@ -1,0 +1,13 @@
+<?php
+
+namespace Filament\Actions;
+
+use Closure;
+
+/**
+ * @method static preventOutdatedRecordUpdate(bool|Closure $pivot = false)
+ * @method static allowOutdatedRecordUpdate()
+ */
+class EditAction extends Action
+{
+}
