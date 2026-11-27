@@ -156,6 +156,17 @@ class EditPost extends EditRecord
 }
 ```
 
+## PHPStan
+
+The `EditAction` macros are declared in a stub file. With
+```phpstan/extension-installer``` it is loaded automatically, otherwise include
+it in your ```phpstan.neon```:
+
+```neon
+includes:
+    - vendor/balismatz/filament-prevent-outdated-record-update/extension.neon
+```
+
 ## License
 
 Filament Prevent Outdated Record Update is open-sourced software licensed under
