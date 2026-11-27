@@ -102,6 +102,20 @@ EditAction::make()
     ->preventOutdatedRecordUpdate(pivot: true)
 ```
 
+> ### PHPStan
+>
+> The ```preventOutdatedRecordUpdate()``` and ```allowOutdatedRecordUpdate()```
+> methods are defined as macros.
+>
+> If PHPStan reports a ```method.notFound``` error for
+> ```Filament\Actions\EditAction```, install ```phpstan/extension-installer```
+> or include the package configuration in your ```phpstan.neon```:
+>
+> ```neon
+> includes:
+>     - vendor/balismatz/filament-prevent-outdated-record-update/extension.neon
+> ```
+
 ### Edit record (page)
 
 To prevent outdated record updates on the edit record (page), use the
@@ -154,17 +168,6 @@ class EditPost extends EditRecord
 
     // ...
 }
-```
-
-## PHPStan
-
-The `EditAction` macros are declared in a stub file. With
-```phpstan/extension-installer``` it is loaded automatically, otherwise include
-it in your ```phpstan.neon```:
-
-```neon
-includes:
-    - vendor/balismatz/filament-prevent-outdated-record-update/extension.neon
 ```
 
 ## License
